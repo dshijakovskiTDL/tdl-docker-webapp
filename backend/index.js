@@ -1,12 +1,19 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors'); // Import the cors package
+const logger = require('pino-http');
 require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
-const port = 5050; // Change this to 5000
+const port = process.env.PORT || 5050;
 
 app.use(cors()); // Enable CORS
+
+app.use(logger({
+  transport: {
+    target: 'pino-pretty'
+  }
+}))
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
@@ -21,6 +28,16 @@ app.get('/api/data', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+app.get('/health', async (_, res) => { 
+  try {
+    await pool.query('SELECT 1');
+    res.status(200).send('OK')
+  } catch (e) { 
+    console.log(e)
+    res.status(500).send('Database connection failed')
+  }
+})
 
 app.listen(port, () => {
   console.log(`Backend running at http://localhost:${port}`);

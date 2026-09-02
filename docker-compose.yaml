@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+     - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret123
+      - POSTGRES_DB=mydatabase
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 3s
+  
+  backend:
+    image: tdl-docker/webapp-backend:latest
+    build:
+      context: ./backend
+    environment:
+      - DATABASE_URL=postgres://postgres:secret123@postgres:5432/mydatabase
+    ports:
+      - "5050:5050"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5050/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 3s
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    image: tdl-docker/webapp-frontend:latest
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 10s
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      backend:
+        condition: service_healthy

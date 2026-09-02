@@ -1,5 +1,7 @@
 FROM node:24-alpine
 
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 COPY package.json .
@@ -10,4 +12,7 @@ COPY . .
 
 USER node
 
-CMD [ "npm", "start" ]
+EXPOSE 5050
+
+ENTRYPOINT [ "npm" ]
+CMD [ "start" ]

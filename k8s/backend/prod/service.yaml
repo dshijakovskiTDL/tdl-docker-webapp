@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service-prod
+spec:
+  selector:
+    app: backend-prod
+  type: LoadBalancer
+  ports:
+  - port: 5050
+    targetPort: 5050

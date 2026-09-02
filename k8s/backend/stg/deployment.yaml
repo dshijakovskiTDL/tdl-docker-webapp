@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment-stg
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-stg
+  template:
+    metadata:
+      labels:
+        app: backend-stg
+    spec:
+      containers:
+      - name: backend-stg
+        image: shijakovski/webapp-backend:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 4040
+        env:
+          - name: DATABASE_URL
+            value: "postgres://postgres:secret123@postgres-db:5432/mydatabase"
+          - name: PORT
+            value: "4040"

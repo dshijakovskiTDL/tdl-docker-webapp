@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment-stg
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-stg
+  template:
+    metadata:
+      labels:
+        app: frontend-stg
+    spec:
+      containers:
+      - name: frontend
+        image: shijakovski/webapp-frontend:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
