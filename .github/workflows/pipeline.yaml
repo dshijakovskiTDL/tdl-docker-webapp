@@ -1,0 +1,72 @@
+name: Pipeline Skeleton
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    
+jobs:
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building Backend..."
+        
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building Frontend..."
+    
+
+  deploy-backend-dev:
+    name: Deploy Backend Dev
+    steps:
+      - run: echo "Deploying Backend Dev..."
+    runs-on: ubuntu-latest
+  deploy-frontend-dev:
+    name: Deploy Frontend Dev
+    steps:
+      - run: echo "Deploying Frontend Dev..."
+    runs-on: ubuntu-latest
+  test-backend-dev:
+    name: Test Backend Dev
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running Tests on Backend Dev..."
+    
+
+  deploy-backend-stg:
+    name: Deploy Backend Staging
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying Backend Staging..."
+  deploy-frontend-stg:
+    name: Deploy Frontend Staging
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying Frontend Staging..."
+  test-backend-stg:
+    name: Test Backend Staging
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running Tests on Backend Staging..."
+    
+
+  deploy-backend-prod:
+    name: Deploy Backend Production
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying Backend Production..."
+  deploy-frontend-prod:
+    name: Deploy Frontend Production
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying Frontend Production..."
+  test-backend-prod:
+    name: Test Backend Production
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running Tests on Backend Production..."
+  
