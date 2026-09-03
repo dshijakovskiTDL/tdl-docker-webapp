@@ -105,45 +105,110 @@ jobs:
         with:
           test_environment: DEV
       
-  # deploy-backend-stg:
-  #   name: Deploy Backend Staging
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Deploying Backend Staging..."
-  #   needs: build-backend    
+  deploy-stg:
+    name: '[STG] Deploy BE/FE'
+    runs-on: self-hosted
+    needs: [test-dev]
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v7
 
-  # deploy-frontend-stg:
-  #   name: Deploy Frontend Staging
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Deploying Frontend Staging..."
-  #   needs: build-frontend    
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+      
+      - name: Deploy Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: frontend-deployment-stg
+          pod_name: frontend-stg
+          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
+      
+      - name: Deploy Backend
+        if: steps.filter.outputs.backend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: backend-deployment-stg
+          pod_name: backend-stg
+          docker_image: shijakovski/webapp-backend:$GITHUB_SHA
 
-  # test-backend-stg:
-  #   name: Test Backend Staging
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Running Tests on Backend Staging..."
-  #   needs: deploy-backend-stg
+  testing-stg:
+    name: '[STG] Run API Tests'
+    runs-on: self-hosted
+    needs: [deploy-stg]
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v7
 
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+        
+      - name: Run API Tests
+        if: steps.filter.outputs.backend == 'true'
+        uses: ./.github/actions/test
+        with:
+          test_environment: STG
 
-  # deploy-backend-prod:
-  #   name: Deploy Backend Production
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Deploying Backend Production..."
-  #   needs: build-backend    
+  deploy-prod:
+    name: '[PROD] Deploy BE/FE'
+    runs-on: self-hosted
+    needs: [test-stg]
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v7
 
-  # deploy-frontend-prod:
-  #   name: Deploy Frontend Production
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Deploying Frontend Production..."
-  #   needs: build-frontend    
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+      
+      - name: Deploy Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: frontend-deployment-prod
+          pod_name: frontend-prod
+          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
+      
+      - name: Deploy Backend
+        if: steps.filter.outputs.backend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: backend-deployment-prod
+          pod_name: backend-prod
+          docker_image: shijakovski/webapp-backend:$GITHUB_SHA
 
-  # test-backend-prod:
-  #   name: Test Backend Production
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Running Tests on Backend Production..."
-  #   needs: deploy-backend-prod
+  testing-prod:
+    name: '[PROD] Run API Tests'
+    runs-on: self-hosted
+    needs: [deploy-prod]
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v7
+
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+        
+      - name: Run API Tests
+        if: steps.filter.outputs.backend == 'true'
+        uses: ./.github/actions/test
+        with:
+          test_environment: PRD
