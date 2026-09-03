@@ -22,7 +22,7 @@ const pool = new Pool({
 });
 
 app.get('/', (_, res) => { 
-  return res.status(200).send('Hey yall! I\'m a dummy API deployed on a k8s cluster, isn\'t that awesome!')
+  return res.status(200).send('Hey everyone! I\'m a PRODUCTION READY API deployed on a k8s cluster, isn\'t that awesome!')
 })
 
 app.get('/api/data', async (req, res) => {
