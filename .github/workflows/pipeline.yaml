@@ -12,9 +12,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -26,6 +26,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           docker_image: shijakovski/webapp-backend
+          docker_image_tag: $GITHUB_SHA
           component_path: ./backend
         
   build-frontend:
@@ -33,9 +34,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -47,6 +48,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           docker_image: shijakovski/webapp-frontend
+          docker_image_tag: $GITHUB_SHA
           component_path: ./frontend
     
   deploy-dev:
@@ -55,9 +57,9 @@ jobs:
     needs: [build-backend, build-frontend]
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -72,7 +74,7 @@ jobs:
         with:
           deployment_name: frontend-deployment-dev
           pod_name: frontend-dev
-          docker_image: shijakovski/webapp-frontend:latest
+          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
       
       - name: Deploy Backend
         if: steps.filter.outputs.backend == 'true'
@@ -80,7 +82,7 @@ jobs:
         with:
           deployment_name: backend-deployment-dev
           pod_name: backend-dev
-          docker_image: shijakovski/webapp-backend:latest
+          docker_image: shijakovski/webapp-backend:$GITHUB_SHA
       
   # test-backend-dev:
   #   name: Test Backend Dev
