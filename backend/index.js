@@ -1,13 +1,15 @@
 const express = require('express');
 const { Pool } = require('pg');
-const cors = require('cors'); // Import the cors package
+const cors = require('cors');
 const logger = require('pino-http');
-require('dotenv').config(); // Load environment variables from .env file
+
+// Load environment variables from .env file
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5050;
 
-app.use(cors()); // Enable CORS
+app.use(cors());
 
 app.use(logger({
   transport: {
