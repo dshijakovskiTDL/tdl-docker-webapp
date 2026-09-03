@@ -13,7 +13,17 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/build
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+        
+      - name: Build Backend
+        if: steps.filter.outputs.backend == 'true'
+        uses: ./.github/actions/build
         with:
           docker_image: shijakovski/webapp-backend
           component_path: ./backend
@@ -24,7 +34,17 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - uses: ./.github/actions/build
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+
+      - name: Build Frontend        
+        if: steps.filter.outputs.frontend == 'true'
+        uses: ./.github/actions/build
         with:
           docker_image: shijakovski/webapp-frontend
           component_path: ./frontend
