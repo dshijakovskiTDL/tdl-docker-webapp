@@ -50,7 +50,7 @@ jobs:
           component_path: ./frontend
     
   deploy-dev:
-    name: \[DEV\] Deploy BE/FE
+    name: '[DEV] Deploy BE/FE'
     runs-on: self-hosted
     needs: [build-backend, build-frontend]
     steps:
