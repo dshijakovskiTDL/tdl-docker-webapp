@@ -11,13 +11,23 @@ jobs:
     name: Build Backend
     runs-on: self-hosted
     steps:
-      - run: echo "Building Backend..."
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t shijakovski/webapp-backend:latest ./backend
+      - name: Push image to Docker Hub
+        run: docker push shijakovski/webapp-backend:latest
         
   build-frontend:
     name: Build Frontend
     runs-on: self-hosted
     steps:
-      - run: echo "Building Frontend..."
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t shijakovski/webapp-frontend:latest ./frontend
+      - name: Push image to Docker Hub
+        run: docker push shijakovski/webapp-frontend:latest
     
 
   deploy-backend-dev:
