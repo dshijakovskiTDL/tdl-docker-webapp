@@ -83,15 +83,28 @@ jobs:
           deployment_name: backend-deployment-dev
           pod_name: backend-dev
           docker_image: shijakovski/webapp-backend:$GITHUB_SHA
+
+  testing-dev:
+    name: '[DEV] Run API Tests'
+    runs-on: self-hosted
+    needs: [deploy-dev]
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v7
+
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+        
+      - name: Run API Tests
+        if: steps.filter.outputs.backend == 'true'
+        uses: ./.github/actions/test
+        with:
+          test_environment: DEV
       
-  # test-backend-dev:
-  #   name: Test Backend Dev
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "Running Tests on Backend Dev..."
-  #   needs: deploy-dev
-
-
   # deploy-backend-stg:
   #   name: Deploy Backend Staging
   #   runs-on: self-hosted

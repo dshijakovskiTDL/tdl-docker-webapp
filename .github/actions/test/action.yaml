@@ -1,0 +1,17 @@
+name: 'Run API Tests'
+
+inputs:
+  test_environment:
+    description: 'The deployed environment on which to run the tests (ex. DEV, STG, PRD)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Pull test runner Docker image
+      run: docker pull shijakovski/test-api:latest
+      shell: bash
+
+    - name: Run the API Tests
+      run: docker run --rm --network host shijakovski/test-api cucumber platform=${{ inputs.test_environment }}
+      shell: bash
