@@ -19,6 +19,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 });
 
+app.get('/', (_, res) => { 
+  return res.status(200).send('Hello everyone! I\'m a dummy API deployed on a k8s cluster, isn\'t that awesome!')
+})
+
 app.get('/api/data', async (req, res) => {
   try {
     const result = await pool.query('SELECT id, name FROM mytable');
