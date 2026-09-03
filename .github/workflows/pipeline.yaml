@@ -74,54 +74,53 @@ jobs:
         if: steps.filter.outputs.backend == 'true'
         run: echo 'Deploying Backend...'
       
-
-  test-backend-dev:
-    name: Test Backend Dev
-    runs-on: self-hosted
-    steps:
-      - run: echo "Running Tests on Backend Dev..."
-    needs: deploy-dev
-
-
-  deploy-backend-stg:
-    name: Deploy Backend Staging
-    runs-on: self-hosted
-    steps:
-      - run: echo "Deploying Backend Staging..."
-    needs: build-backend    
-
-  deploy-frontend-stg:
-    name: Deploy Frontend Staging
-    runs-on: self-hosted
-    steps:
-      - run: echo "Deploying Frontend Staging..."
-    needs: build-frontend    
-
-  test-backend-stg:
-    name: Test Backend Staging
-    runs-on: self-hosted
-    steps:
-      - run: echo "Running Tests on Backend Staging..."
-    needs: deploy-backend-stg
+  # test-backend-dev:
+  #   name: Test Backend Dev
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Running Tests on Backend Dev..."
+  #   needs: deploy-dev
 
 
-  deploy-backend-prod:
-    name: Deploy Backend Production
-    runs-on: self-hosted
-    steps:
-      - run: echo "Deploying Backend Production..."
-    needs: build-backend    
+  # deploy-backend-stg:
+  #   name: Deploy Backend Staging
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Deploying Backend Staging..."
+  #   needs: build-backend    
 
-  deploy-frontend-prod:
-    name: Deploy Frontend Production
-    runs-on: self-hosted
-    steps:
-      - run: echo "Deploying Frontend Production..."
-    needs: build-frontend    
+  # deploy-frontend-stg:
+  #   name: Deploy Frontend Staging
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Deploying Frontend Staging..."
+  #   needs: build-frontend    
 
-  test-backend-prod:
-    name: Test Backend Production
-    runs-on: self-hosted
-    steps:
-      - run: echo "Running Tests on Backend Production..."
-    needs: deploy-backend-prod
+  # test-backend-stg:
+  #   name: Test Backend Staging
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Running Tests on Backend Staging..."
+  #   needs: deploy-backend-stg
+
+
+  # deploy-backend-prod:
+  #   name: Deploy Backend Production
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Deploying Backend Production..."
+  #   needs: build-backend    
+
+  # deploy-frontend-prod:
+  #   name: Deploy Frontend Production
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Deploying Frontend Production..."
+  #   needs: build-frontend    
+
+  # test-backend-prod:
+  #   name: Test Backend Production
+  #   runs-on: self-hosted
+  #   steps:
+  #     - run: echo "Running Tests on Backend Production..."
+  #   needs: deploy-backend-prod
