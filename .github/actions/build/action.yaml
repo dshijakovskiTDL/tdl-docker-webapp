@@ -19,5 +19,8 @@ runs:
   steps:
     - name: Build Docker image
       run: docker build -t ${{ docker_image }}:${{ docker_image_tag }} ${{ component_path }}
+      shell: bash
+
     - name: Push image to Docker Hub
       run: docker push ${{ docker_image }}:${{ docker_image_tag }}
+      shell: bash
