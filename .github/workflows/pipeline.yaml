@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - name: Build Docker image
-        run: docker build -t shijakovski/webapp-backend:latest ./backend
-      - name: Push image to Docker Hub
-        run: docker push shijakovski/webapp-backend:latest
+      - uses: ./.github/actions/build
+        with:
+          docker_image: shijakovski/webapp-backend
+          component_path: ./backend
         
   build-frontend:
     name: Build Frontend
@@ -24,10 +24,10 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-      - name: Build Docker image
-        run: docker build -t shijakovski/webapp-frontend:latest ./frontend
-      - name: Push image to Docker Hub
-        run: docker push shijakovski/webapp-frontend:latest
+      - uses: ./.github/actions/build
+        with:
+          docker_image: shijakovski/webapp-frontend
+          component_path: ./frontend
     
 
   deploy-backend-dev:
