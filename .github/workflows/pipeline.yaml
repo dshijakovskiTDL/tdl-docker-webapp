@@ -108,7 +108,7 @@ jobs:
   deploy-stg:
     name: '[STG] Deploy BE/FE'
     runs-on: self-hosted
-    needs: [test-dev]
+    needs: [testing-dev]
     steps:
       - name: Checkout the code
         uses: actions/checkout@v7
@@ -162,7 +162,7 @@ jobs:
   deploy-prod:
     name: '[PROD] Deploy BE/FE'
     runs-on: self-hosted
-    needs: [test-stg]
+    needs: [testing-stg]
     steps:
       - name: Checkout the code
         uses: actions/checkout@v7
