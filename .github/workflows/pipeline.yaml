@@ -64,7 +64,7 @@ jobs:
             frontend:
               - 'frontend/**'
             backend:
-              - 'backend:/**'
+              - 'backend/**'
       
       - name: Deploy Frontend
         if: steps.filter.outputs.frontend == 'true'
