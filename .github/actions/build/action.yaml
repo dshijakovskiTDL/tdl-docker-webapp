@@ -18,9 +18,9 @@ runs:
   using: "composite"
   steps:
     - name: Build Docker image
-      run: docker build -t ${{ docker_image }}:${{ docker_image_tag }} ${{ component_path }}
+      run: docker build -t ${{ inputs.docker_image }}:${{ inputs.docker_image_tag }} ${{ inputs.component_path }}
       shell: bash
 
     - name: Push image to Docker Hub
-      run: docker push ${{ docker_image }}:${{ docker_image_tag }}
+      run: docker push ${{ inputs.docker_image }}:${{ inputs.docker_image_tag }}
       shell: bash
