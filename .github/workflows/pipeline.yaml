@@ -68,14 +68,6 @@ jobs:
             backend:
               - 'backend/**'
       
-      - name: Deploy Frontend
-        if: steps.filter.outputs.frontend == 'true'
-        uses: ./.github/actions/deploy
-        with:
-          deployment_name: frontend-deployment-dev
-          pod_name: frontend-dev
-          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
-      
       - name: Deploy Backend
         if: steps.filter.outputs.backend == 'true'
         uses: ./.github/actions/deploy
@@ -83,6 +75,14 @@ jobs:
           deployment_name: backend-deployment-dev
           pod_name: backend-dev
           docker_image: shijakovski/webapp-backend:$GITHUB_SHA
+
+      - name: Deploy Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: frontend-deployment-dev
+          pod_name: frontend-dev
+          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
 
   testing-dev:
     name: '[DEV] Run API Tests'
@@ -122,14 +122,6 @@ jobs:
             backend:
               - 'backend/**'
       
-      - name: Deploy Frontend
-        if: steps.filter.outputs.frontend == 'true'
-        uses: ./.github/actions/deploy
-        with:
-          deployment_name: frontend-deployment-stg
-          pod_name: frontend-stg
-          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
-      
       - name: Deploy Backend
         if: steps.filter.outputs.backend == 'true'
         uses: ./.github/actions/deploy
@@ -137,6 +129,14 @@ jobs:
           deployment_name: backend-deployment-stg
           pod_name: backend-stg
           docker_image: shijakovski/webapp-backend:$GITHUB_SHA
+
+      - name: Deploy Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: frontend-deployment-stg
+          pod_name: frontend-stg
+          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
 
   testing-stg:
     name: '[STG] Run API Tests'
@@ -176,14 +176,6 @@ jobs:
             backend:
               - 'backend/**'
       
-      - name: Deploy Frontend
-        if: steps.filter.outputs.frontend == 'true'
-        uses: ./.github/actions/deploy
-        with:
-          deployment_name: frontend-deployment-prod
-          pod_name: frontend-prod
-          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
-      
       - name: Deploy Backend
         if: steps.filter.outputs.backend == 'true'
         uses: ./.github/actions/deploy
@@ -191,6 +183,14 @@ jobs:
           deployment_name: backend-deployment-prod
           pod_name: backend-prod
           docker_image: shijakovski/webapp-backend:$GITHUB_SHA
+
+      - name: Deploy Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: frontend-deployment-prod
+          pod_name: frontend-prod
+          docker_image: shijakovski/webapp-frontend:$GITHUB_SHA
 
   testing-prod:
     name: '[PROD] Run API Tests'
