@@ -1,0 +1,23 @@
+name: 'Build and Push Docker image'
+description: 'Simple composite action for building and pushing Docker images'
+
+inputs:
+  docker_image:
+    description: 'The Docker image to build and push to Docker Hub'
+    required: true
+  docker_image_tag:
+    description: 'The tag of the Docker image'
+    required: false
+    default: 'latest'
+  component_path:
+    description: 'The location of the Docker image'
+    required: false
+    default: '.'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build Docker image
+      run: docker build -t ${{ docker_image }}:${{ docker_image_tag }} ${{ component_path }}
+    - name: Push image to Docker Hub
+      run: docker push ${{ docker_image }}:${{ docker_image_tag }}
