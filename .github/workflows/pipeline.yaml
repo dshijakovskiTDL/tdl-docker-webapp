@@ -50,7 +50,7 @@ jobs:
           component_path: ./frontend
     
   deploy-dev:
-    name: Deploy BE/FE to Dev Environment
+    name: \[DEV\] Deploy BE/FE
     runs-on: self-hosted
     needs: [build-backend, build-frontend]
     steps:
@@ -68,11 +68,19 @@ jobs:
       
       - name: Deploy Frontend
         if: steps.filter.outputs.frontend == 'true'
-        run: echo 'Deploying Frontend...'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: frontend-deployment-dev
+          pod_name: frontend-dev
+          docker_image: shijakovski/webapp-frontend:latest
       
       - name: Deploy Backend
         if: steps.filter.outputs.backend == 'true'
-        run: echo 'Deploying Backend...'
+        uses: ./.github/actions/deploy
+        with:
+          deployment_name: backend-deployment-dev
+          pod_name: backend-dev
+          docker_image: shijakovski/webapp-backend:latest
       
   # test-backend-dev:
   #   name: Test Backend Dev

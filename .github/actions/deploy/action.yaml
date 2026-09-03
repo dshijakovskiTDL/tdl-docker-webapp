@@ -1,0 +1,25 @@
+name: 'Deploy to K8S minikube cluster'
+
+inputs:
+  deployment_name:
+    description: 'The name of the k8s deployment to deploy to'
+    required: true
+  pod_name:
+    description: 'The name of the k8s pod within the deployment to target deployment on'
+    required: true
+  docker_image:
+    description: 'The Docker image to deploy'
+    required: true
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Perform deployment
+      run: kubectl set image deployment ${{ inputs.deployment_name }} ${{ inputs.pod_name }}=${{ inputs.docker_image }}
+      shell: bash
+
+      # Restart the deployment just in case
+    - name: Perform rollout restart
+      run: kubectl rollout restart deployment ${{ inputs.deployment_name }}
+      shell: bash
